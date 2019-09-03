@@ -1,0 +1,36 @@
+{
+    "name": "@voliware/node-todo",
+    "version": "1.0.0",
+    "author": "Anthony Agostino",
+    "description": "Node Todo application",
+    "keywords": [
+        "todo",
+        "list"
+    ],
+    "main": "index.js",
+    "dependencies": {
+        "@voliware/logger": "^1.4.1",
+        "@voliware/node-server": "^1.2.4",
+        "@voliware/template2": "^1.0.3",
+        "cookie-parser": "^1.4.4",
+        "mongodb": "^3.3.2",
+        "nodemailer": "^4.7.0"
+    },
+    "devDependencies": {
+        "mocha": "^6.2.0",
+        "uglify-es": "^3.3.9"
+    },
+    "scripts": {
+        "build": "node build",
+        "test": "mocha"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Voliware/node-todo.git"
+    },
+    "bugs": {
+        "url": "https://github.com/Voliware/node-todo/issues"
+    },
+    "homepage": "https://github.com/Voliware/node-todo",
+    "license": "MIT"
+}
