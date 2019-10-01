@@ -9,18 +9,21 @@
     ],
     "main": "index.js",
     "dependencies": {
-        "@voliware/logger": "^1.4.1",
-        "@voliware/node-server": "^1.2.4",
-        "@voliware/template2": "^1.0.3",
+        "@voliware/logger": "^1.4.4",
+        "@voliware/node-build": "^1.0.3",
+        "@voliware/node-server": "^1.2.7",
+        "@voliware/template2": "^1.1.1",
         "cookie-parser": "^1.4.4",
         "mongodb": "^3.3.2",
         "nodemailer": "^4.7.0"
     },
     "devDependencies": {
-        "mocha": "^6.2.0",
+        "mocha": "^6.2.1",
         "uglify-es": "^3.3.9"
     },
     "scripts": {
+        "prestart": "node build",
+        "start": "node app.js",
         "build": "node build",
         "test": "mocha"
     },

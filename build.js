@@ -1,52 +1,36 @@
-const uglify = require('uglify-es');
-const fs = require('fs');
+const NodeBuild = require('@voliware/node-build');
+const version = require('./package.json').version;
 
-const src = [
+// js
+const jsInput = [
     './node_modules/@voliware/template2/dist/template2-bundle.min.js',
     './public/js/anime.min.js',
     './public/js/cookie.min.js',
     './public/js/piklor.min.js',
     './public/js/app.js'
 ];
-const out = "./public/js/app.min.js"
+const jsOutput = "./public/js/app.min.js"
+const jsConfig = {
+    name: "node-todo JS",
+    version: version, 
+    input: jsInput,
+    output: jsOutput
+};
 
-function readCode(files){
-    let code = "";
-    for(let i = 0; i < files.length; i++){
-        code += fs.readFileSync(files[i])
-        if(!code){
-            console.error("Failed to read file");
-        }
-    }
-    return code;
-}
+// css
+const cssInput = [
+    './node_modules/@voliware/template2/dist/template2.min.css',
+    './public/css/fontawesome.min.css',
+    './public/css/style.css'
+];
+const cssOutput = "./public/css/style.min.css";
+const cssConfig = {
+    name: "node-todo CSS",
+    version: version,
+    input: cssInput,
+    output: cssOutput
+};
 
-function printFiles(files){
-    let text = "";
-    for(let i = 0; i < files.length; i++){
-        text += `  ${files[i]}`
-        if(i + 1 !== files.length){
-            text += "\n";
-        }
-    }
-    return text;
-}
-
-let code = readCode(src);
-let result = uglify.minify(code.toString());
-fs.writeFile(out, result.code, function(err){
-    let status = "OK";
-    if(err){
-        status = "ERR";
-        console.error(err);
-    } 
-    console.log(`\r\n\\\\     \/\/ \/\/\/\/\/\/ \/\/     \/\/ \\\\           \/\/ \/\/\\ \\\\\\\\\\\\ \\\\\\\\\\\\\\\r\n \\\\   \/\/ \/\/  \/\/ \/\/     \/\/   \\\\   \/\/\\   \/\/ \/\/ \\\\ \\\\  \\\\ \\\\___\r\n  \\\\ \/\/ \/\/  \/\/ \/\/     \/\/     \\\\ \/\/ \\\\ \/\/ \/\/   \\\\ \\\\\\\\\\  \\\\\r\n   \\\\\/ \/\/\/\/\/\/ \/\/\/\/\/\/ \/\/       \\\\\/   \\\\\/ \/\/     \\\\ \\\\  \\\\ \\\\\\\\\\\\`);
-    console.log('\r\n');
-    console.log('NODE-TODO - V1.0.0');
-    console.log('\r\n');
-    console.log(`- ${(new Date()).toLocaleString()}`)
-    console.log('- INPUT');
-    console.log(`${printFiles(src)}`);
-    console.log(`- OUTPUT: ${out}`);
-    console.log(`- STATUS: ${status}`);
-});
+// build
+const configs = [jsConfig, cssConfig];
+new NodeBuild.Build(configs).run();
