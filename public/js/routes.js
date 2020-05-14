@@ -16,7 +16,7 @@ class TodoRoute {
 
     /**
      * Delete a todo
-     * @param {string} _id - todo id
+     * @param {String} _id - todo id
      * @return {Promise}
      */
     deleteTodo(_id){
@@ -27,7 +27,7 @@ class TodoRoute {
 
     /**
      * Get a todo
-     * @param {string} _id - todo id
+     * @param {String} _id - todo id
      * @return {Promise}
      */
     getTodo(_id){
@@ -48,8 +48,8 @@ class TodoRoute {
 
     /**
      * Reparent a todo by reattaching a todo to a different parent
-     * @param {string} todoId - todo _id to move to a new parent
-     * @param {string} parentId - parent todo _id to move the todo to
+     * @param {String} todoId - todo _id to move to a new parent
+     * @param {String} parentId - parent todo _id to move the todo to
      * @return {Promise}
      */
     reparentTodo(todoId, parentId){
@@ -60,7 +60,7 @@ class TodoRoute {
 
     /**
      * Set the collapsed state
-     * @param {string} _id - todo id
+     * @param {String} _id - todo id
      * @param {boolean} state - true to collapse, false to uncollapse
      * @param {boolean} [recursive=false] - true to apply same to all children
      * @return {Promise}
@@ -90,7 +90,7 @@ class UserRoute {
 
     /**
      * Get a user from an email
-     * @param {string} email 
+     * @param {String} email 
      * @return {Promise}
      */
     get(email){
@@ -110,7 +110,7 @@ class UserRoute {
 
     /**
      * Delete a user
-     * @param {number} id 
+     * @param {Number} id 
      * @return {Promise}
      */
     delete(id){
@@ -130,8 +130,8 @@ class UserRoute {
 
     /**
      * Login
-     * @param {string} email 
-     * @param {string} password 
+     * @param {String} email 
+     * @param {String} password 
      * @return {Promise}
      */
     login(email, password){
@@ -152,8 +152,8 @@ class UserRoute {
 
     /**
      * Register a new user
-     * @param {string} email 
-     * @param {string} password 
+     * @param {String} email 
+     * @param {String} password 
      * @return {Promise}
      */
     register(email, password){
@@ -164,7 +164,7 @@ class UserRoute {
 
     /**
      * Reset a user's password
-     * @param {string} email 
+     * @param {String} email 
      * @return {Promise}
      */
     reset(email){

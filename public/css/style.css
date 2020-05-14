@@ -260,6 +260,15 @@ template-todo{
 .todo-button-collapse-container{
     width:50px;
 }
+/* user app */
+#todoUserApp button{
+    background: #5cb4ff;
+    border-radius: 5px;
+    padding: 15px;
+    font-weight: bold;
+    font-size:16px;
+    color:white;
+}
 /* colour picker */
 .todo-colour-picker{
     background: rgba(255, 255, 255, 0.75);
