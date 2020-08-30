@@ -7,7 +7,6 @@ class TodoTemplateManager extends ElementManager {
     /**
      * Constructor
      * @param {HTMLElement} wrapper 
-     * @return {TodoTemplateManager}
      */
     constructor(wrapper){
         let template = document.getElementById('todoTemplate');
@@ -20,14 +19,12 @@ class TodoTemplateManager extends ElementManager {
             let draggingId = event.dataTransfer.getData("text");
             console.log(draggingId);
         });
-        return this;
     }
 
     /**
      * Attach handlers to created TodoTemplates.
      * Propogate events upwards.
      * @param {Template} template 
-     * @return {TodoTemplateManager}
      */
     attachElementHandlers(template){
         template.on('addChild', () => {
@@ -39,43 +36,39 @@ class TodoTemplateManager extends ElementManager {
         template.on('reparent', (data) => {
             this.emit('reparent', data);
         });
-        return this;
     }
 
     /**
      * Append the template after its parent,
      * or at the end if there is no parent.
      * @param {Template} template 
-     * @return {TodoTemplateManager}
      */
     appendElement(template){
-        if(template.cachedData.parent){
-            let parent = this.elements.get(template.cachedData.parent);
+        if(template.cachedData.parentId){
+            let parent = this.elements.get(template.cachedData.parentId);
             if(parent){
                 template.appendTo(parent.elements.children);
-                return this;
+                return;
             }
         }
 
-        return super.appendElement(template);
+        super.appendElement(template);
     }
 
     /**
      * Render the templates.
      * Process the data into an ordered map.
      * @param {object[]} data 
-     * @return {TodoTemplateManager}
      */
     render(data){
         data = this.sortDataToOrderedMap(data);
-        return super.render(data);
+        super.render(data);
     }
 
     /**
-     * Sort the data into a map.
-     * The map will be ordered by 
-     * parent/child relationships.
-     * @param {object[]} data 
+     * Sort the data into a map. 
+     * The map will be ordered by parent/child relationships.
+     * @param {object[]} data - array of unsorted todo objects
      * @return {Map}
      */
     sortDataToOrderedMap(data){
@@ -101,14 +94,13 @@ class TodoTemplateManager extends ElementManager {
         /**
          * Recursively append the children 
          * of a todo object to its parent.
-         * @param {string[]} childrenIds 
+         * @param {string[]} children 
          * @param {object[]} dataArray 
          * @param {Map} map 
          */
-        function appendChildren(childrenIds, dataArray, map){
-            for (let i = 0; i < childrenIds.length; i++) {
-                let _id = childrenIds[i];
-                let todo = findTodo(_id, dataArray);
+        function appendChildren(children, dataArray, map){
+            for (let i = 0; i < children.length; i++) {
+                let todo = findTodo(children[i], dataArray);
                 if(todo){
                     map.set(todo._id, todo);
                 }
@@ -118,12 +110,12 @@ class TodoTemplateManager extends ElementManager {
         let map = new Map();
         for (let i = 0; i < data.length; i++) {
             let todo = data[i];
-            if(!todo.parent || todo.parent === ""){
+            if(!todo.parentId || todo.parentId === ""){
                 if(!map.get(todo._id)){
                     map.set(todo._id, todo);
                 }
             }
-            if(todo.children && todo.children.length){
+            if(Array.isArray(todo.children) && todo.children.length){
                 appendChildren(todo.children, data, map);
             }
         }

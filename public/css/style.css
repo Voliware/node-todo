@@ -139,7 +139,7 @@ main {
 /* app */
 #app {
     height: 100%;
-    width: 100%;
+    width: 80%;
 }
 #todoHeader {
     height: 32px;
@@ -261,6 +261,9 @@ template-todo{
     width:50px;
 }
 /* user app */
+#todoUserApp {
+    width: 30%;
+}
 #todoUserApp button{
     background: #5cb4ff;
     border-radius: 5px;
@@ -268,6 +271,21 @@ template-todo{
     font-weight: bold;
     font-size:16px;
     color:white;
+}
+template-user-links{
+    display: block;
+    padding: 0 20px;
+}
+/* template-feedback */
+template-feedback{
+    border-radius: 5px;
+}
+.feedback-close{
+    background: none;
+    padding: 5px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }
 /* colour picker */
 .todo-colour-picker{

@@ -7,7 +7,6 @@ class TodoTemplate extends Template {
     /**
      * Constructor
      * @param {Object} [options]
-     * @return {TodoTemplate}
      */
     constructor(options = {}){
         let defaults = {
@@ -31,46 +30,23 @@ class TodoTemplate extends Template {
             }
         };
         super(Object.extend(defaults, options));
-        this.colourPicker = null;
-        return this;
-    }
-
-    /**
-     * Callback when dom is attached.
-     * Attach all DOM handlers.
-     * Create the colour picker, as it relies
-     * on the dom to be captured via findElements()
-     * in super.connectedCallback();
-     * Focus the text input.
-     */
-    connectedCallback(){
-        super.connectedCallback();
+        
         this.attachButtonHandlers()
         this.attachDragHandlers();
         this.attachInputHandlers();
-        this.createColourPicker();
         this.focusTextInput();
-    }
 
-    /**
-     * Create the colour picker.
-     * @return {TodoTemplate}
-     */
-    createColourPicker(){
         this.colourPicker = new Piklor(this.elements.colourPicker, this.options.colours, {
             open: this.elements.colourButton
         });
         this.colourPicker.colorChosen((colour) => {
             this.setBackgroundColour(colour);
             this.removeColourPickerStyle(false);
-        });
-
-        return this;
+        });;
     }
 
     /**
      * Attach the drag and drop handlers.
-     * @return {TodoTemplate}
      */
     attachDragHandlers(){
         this.on('dragstart', (event) => {
@@ -110,13 +86,10 @@ class TodoTemplate extends Template {
                 });
             }
         });
-
-        return this;
     }
 
     /**
      * Attach button handlers.
-     * @return {TodoTemplate}
      */
     attachButtonHandlers(){
         this.elements.addButton.addEventListener('click', () => {
@@ -134,8 +107,6 @@ class TodoTemplate extends Template {
         this.elements.statusButton.addEventListener('click', () => {
             this.toggleStatus();
         });
-
-        return this;
     }
 
     /**
@@ -143,7 +114,6 @@ class TodoTemplate extends Template {
      * When the input is clicked, set the Todo as active.
      * When the user stops typing for 500 ms,
      * update the Todo on the backend.
-     * @return {TodoTemplate}
      */
     attachInputHandlers(){
         this.elements.textInput.addEventListener('click', (event) => {
@@ -163,17 +133,13 @@ class TodoTemplate extends Template {
                 this.update();
             }, 500);
         });
-
-        return this;
     }
 
     /**
      * Focus the text input
-     * @return {TodoTemplate}
      */
     focusTextInput(){
         this.elements.textInput.focus();
-        return this;
     }
 
     /**
@@ -182,7 +148,7 @@ class TodoTemplate extends Template {
      * @return {Promise}
      */
     addChildTodo(){
-        return Router.todo.addTodo({parent: this.getId()})
+        return Router.addTodo({parentId: this.getId()})
             .then(() => {
                 this.emit('addChild');
             })
@@ -211,7 +177,7 @@ class TodoTemplate extends Template {
      * @return {Promise}
      */
     delete(){
-        return Router.todo.deleteTodo(this.getId())
+        return Router.deleteTodo(this.getId())
             .then(() => {
                 this.emit('delete');
                 this.remove();
@@ -237,7 +203,7 @@ class TodoTemplate extends Template {
      * @return {null|string}
      */
     getParentId(){
-        return this.cachedData.parent || null;
+        return this.cachedData.parentId || null;
     }
 
     /**
@@ -275,90 +241,85 @@ class TodoTemplate extends Template {
      * @return {boolean} - true if the todo is a parent of this todo
      */
     isParent(todoId){
-        return this.cachedData.parent === todoId;
+        return this.cachedData.parentId === todoId;
     }
 
     /**
      * Render the todo template.
-     * Set the text input value.
-     * If the todo has a parent, add a left margin.
      * @param {Object} data
+     * @param {String} data.parentId
+     * @param {Number} data.backgroundColor
+     * @param {Number} data.collapsed
+     * @param {Object[]} data.children
+     * @param {Number} data.status
      * @param {String} data.text
-     * @return {TodoTemplate}
      */
-    render(data){
-        super.render(data);
-        this.elements.textInput.value = data.text;
-        this.renderStatus(data.status);
-        this.renderCollapse(data.collapsed);
-        this.renderBackgroundColour(data.backgroundColor);
-        if(data.parent){
+    render({
+        parentId = "",
+        backgroundColor = "white",
+        collapsed = 0,
+        children = [],
+        status = TodoTemplate.status.incomplete,
+        text = ""
+    })
+    {
+        super.render(arguments[0]);
+        
+        this.elements.textInput.value = text;
+        this.renderStatus(status);
+        this.renderCollapse(collapsed);
+        this.renderBackgroundColour(backgroundColor);
+        this.enableCollapsedButton(children.length);
+
+        if(parentId !== ""){
             this.classList.add('todo-child');
         }
-        if(Array.isArray(data.children) && data.children.length){
-            this.setCollapsedButton(true);
-        }
-        if(data.toggleCollapse === true){
-            this.toggleCollapse(true);
-        }
-        return this;
     }
 
     /**
      * Render the todo as active.
      * Remove the inactive class and add the active class.
-     * @return {TodoTemplate}
      */
     renderActive(){
         this.replaceClass('inactive', 'active');
-        return this;
     }
 
     /**
      * Render the todo as inactive.
      * Remove the active class and add the inactive class.
-     * @return {TodoTemplate}
      */
     renderInactive(){
         this.replaceClass('active', 'inactive');
-        return this;
     }
 
     /**
      * Render the background colour.
      * @param {String} backgroundColor
-     * @return {TodoTemplate}
      */
     renderBackgroundColour(backgroundColor){
         this.elements.body.style.backgroundColor = backgroundColor;
-        return this;
     }
 
     /**
      * Render the collapsed button
      * @param {boolean} state 
-     * @return {TodoTemplate}
      */
     renderCollapsedButton(state){
         this.elements.collapseButton.disabled = !state;
-        return this;
     }
 
     /**
      * Render the state of the children todo container
      * @param {boolean} state 
-     * @return {TodoTemplate}
      */
     renderCollapse(state){
         Template.display(this.elements.children, !state);
         this.setCollapsedIcon(!state);
-        return this;
     }
 
     /**
      * Render the the collapsed icon.
      * @param {boolean} state - true to have icon as arrow up, false down
-     * @return {TodoTemplate}
      */
     renderCollapsedIcon(state){
         if(state){
@@ -369,13 +330,11 @@ class TodoTemplate extends Template {
             Template.removeClass(this.elements.collapseIcon, 'fa-chevron-up');
             Template.addClass(this.elements.collapseIcon, 'fa-chevron-down');
         }
-        return this;
     }
 
     /**
      * Render the status button.
      * @param {Number} status 
-     * @return {TodoTemplate}
      */
     renderStatus(status){
         if(status === TodoTemplate.status.incomplete){
@@ -388,56 +347,47 @@ class TodoTemplate extends Template {
             this.elements.textInput.classList.add("complete");
             this.elements.statusButton.classList.add("complete");
         }
-        return this;
     }
 
     /**
      * Render the text input
      * @param {String} value 
-     * @return {TodoTemplate}
      */
     renderText(value){
         this.elements.textInput.value = value;
-        return this;
     }
 
     /**
      * Remove the 'colour-picker-open' class
      * from the body.
-     * @return {TodoTemplate}
      */
     removeColourPickerStyle(){
         this.elements.body.classList.remove('colour-picker-open');
-        return this;
     }
 
     /**
      * Set as the active todo element
-     * @return {TodoTemplate}
      */
     setActive(){
         this.renderInactive();
-        return this;
     }
 
     /**
      * Set as an inactive todo element
-     * @return {TodoTemplate}
      */
     setInactive(){
         this.renderActive();
-        return this;
     }
 
     /**
      * Set the background colour
      * @param {String} backgroundColor 
-     * @return {TodoTemplate}
+     * @return {Promise}
      */
     setBackgroundColour(backgroundColor){
         this.renderBackgroundColour(backgroundColor);
         let data = {_id: this.getId(), backgroundColor};
-        return Router.todo.updateTodo(data)
+        return Router.updateTodo(data)
             .then(() => {
 
             })
@@ -448,12 +398,12 @@ class TodoTemplate extends Template {
 
     /**
      * Set the collapsed state
-     * @param {boolean} state 
+     * @param {boolean} collapsed 
      * @param {boolean} recursive 
      * @return {Promise}
      */
-    setCollapsedState(state, recursive){
-        return Router.todo.setCollapsedState(this.getId(), state, recursive)
+    setCollapsedState(collapsed, recursive){
+        return Router.setCollapsedState(this.getId(), collapsed, recursive)
             .then(() => {
 
             })
@@ -466,21 +416,17 @@ class TodoTemplate extends Template {
      * Set the enabled/disabled state of the collapseButton.
      * Also set the icon to up/down.
      * @param {boolean} state - true to enable, false to disable
-     * @return {TodoTemplate}
      */
-    setCollapsedButton(state){
+    enableCollapsedButton(state){
         this.renderCollapsedButton(state);
-        return this;
     }
 
     /**
      * Set the collapseButton's icon between up and down arrow
      * @param {boolean} state - true to show arrow up, false to show arrow down
-     * @return {TodoTemplate}
      */
     setCollapsedIcon(state){
         this.renderCollapsedIcon(state);
-        return this;
     }
 
     /**
@@ -494,7 +440,7 @@ class TodoTemplate extends Template {
             _id: this.getId(),
             status: status
         };
-        return Router.todo.updateTodo(params)
+        return Router.updateTodo(params)
             .then(() => {
                 this.renderStatus(status);
             })
@@ -506,11 +452,9 @@ class TodoTemplate extends Template {
     /**
      * Set the text input
      * @param {String} value 
-     * @return {TodoTemplate}
      */
     setText(value){
         this.renderText(value);
-        return this;
     }
 
     /**
@@ -528,18 +472,15 @@ class TodoTemplate extends Template {
     /**
      * Toggle the "colour-picker-open" class on the 
      * .todo-body element. Removes the bottom borders.
-     * @return {TodoTemplate}
      */
     toggleColourPickerStyle(){
         this.elements.body.classList.toggle('colour-picker-open');
-        return this;
     }
 
     /**
      * Toggle the "todo-drag-over" class on the 
      * .todo-body element. Adds a border.
      * @param {boolean} enable - true to add style, false to remove
-     * @return {TodoTemplate}
      */
     enableDragOverStyle(state){
         if(state){
@@ -548,7 +489,6 @@ class TodoTemplate extends Template {
         else {
             this.elements.body.classList.remove('todo-drag-over');
         }
-        return this;
     }
 
     /**
@@ -570,7 +510,7 @@ class TodoTemplate extends Template {
             _id: this.getId(),
             text: this.getText()
         };
-        return Router.todo.updateTodo(data)
+        return Router.updateTodo(data)
             .then(() => {
                 this.emit('update');
             })
@@ -580,7 +520,7 @@ class TodoTemplate extends Template {
     }
 }
 TodoTemplate.status = {
-    incomplete:0,
-    complete:1
+    incomplete: 0,
+    complete: 1
 };
 customElements.define('template-todo', TodoTemplate);

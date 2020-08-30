@@ -5,66 +5,78 @@ class TodoApp {
 
     /**
      * Constructor
-     * @return {TodoApp}
      */
     constructor(){
-        // elements
         this.wrapper = document.getElementById('app');
         this.loader = document.getElementById('loader');
         this.userAppElement = document.getElementById('todoUserApp');
-        // components
+        this.todoList = document.getElementById('todoList');
+        this.addTodoButton = document.getElementById('todoAddButton');
+        
         this.userApp = new UserApp();
-        this.todo = new Todo();
-        // handlers
-        this.userApp.on('login.success', (data) => {
-            this.todo.initialize();
+        this.todoManager = new TodoTemplateManager(this.todoList);
+        
+        this.userApp.on('login.cookie.success', () => {
+            this.getTodos();
             this.displayModule('app');
-            this.user.setUserData(data);
-            this.user.render(data);
+        });
+        this.userApp.on('login.cookie.fail', () => {
+            this.displayModule('login');
+        });
+        this.userApp.on('login.success', (data) => {
+            this.getTodos();
+            this.displayModule('app');
         });
         this.userApp.on('login.required', () => {
             this.displayModule('login');
         });
         this.userApp.on('logout', () => {
-            this.logout();
+            this.displayModule('login');
         });
-        return this;
+
+        this.todoManager.on('addChild', () => {
+            this.getTodos();
+        });
+        this.todoManager.on('delete', () => {
+            this.getTodos();
+        });
+        this.todoManager.on('reparent', (data) => {
+            this.reparentTodo(data.todoId, data.parentId);
+        });
+        this.todoManager.on('update', () => {
+        });
+        this.addTodoButton.addEventListener('click', () => {
+            this.addTodo();
+        });
     }
 
     /**
-     * Toggle the display of the module
-     * @param {boolean} state
-     * @return {TodoApp}
+     * Toggle the display of the app
+     * @param {Boolean} state
      */
     display(state){
         Template.display(this.wrapper, state);
-        return this;
     }
 
     /**
      * Toggle the display of the page loader
-     * @param {boolean} state 
-     * @return {TodoApp}
+     * @param {Boolean} state 
      */
     displayLoader(state){
         Template.display(this.loader, state);
-        return this;
     }
 
     /**
      * Toggle the display of the user module
-     * @param {boolean} state
-     * @return {TodoApp}
+     * @param {Boolean} state
      */
     displayUser(state){
-        this.userApp.display(state);
-        return this;
+        Template.display(this.userAppElement, state);
     }
 
     /**
      * Toggle the display of the modules
      * @param {String} module - module to show, hide the rest
-     * @return {TodoApp}
      */
     displayModule(module){
         switch(module){
@@ -72,28 +84,63 @@ class TodoApp {
                 this.display(false);
                 this.displayUser(false);
                 this.displayLoader(true);
-                return;
+                break;
             case 'app':
                 this.displayLoader(false);
                 this.displayUser(false);
                 this.display(true);
-                return;
+                break;
             case 'login':
                 this.displayLoader(false);
                 this.display(false);
                 this.displayUser(true);
-                return;
+                break;
         }
     }
 
     /**
+     * Add a new todo
+     * @return {Promise}
+     */
+    addTodo(){
+        return Router.addTodo({})
+            .then(() => {
+                this.getTodos();
+            });
+    }
+    
+    /**
+     * Get all todos and render them
+     * @return {Promise}
+     */
+    getTodos(){
+        return Router.getTodos()
+            .then((response) => {
+                return response.json();
+            })
+            .then((json) => {
+                this.todoManager.render(json);
+            });
+    }
+
+    /**
+     * Reparent a todo by reattaching a child to a different parent
+     * @param {String} todoId - todo _id to move to a new parent
+     * @param {String} parentId - parent todo _id to move the todo to
+     * @return {Promise}
+     */
+    reparentTodo(todoId, parentId){
+        return Router.reparentTodo(todoId, parentId)
+            .then(() => {
+                this.todoManager.empty();
+                this.getTodos();
+            });
+    }
+
+    /**
      * Initialize all components
-     * @return {TodoApp}
      */
     initialize(){
-        // setTimeout(() => {
-        //     this.login.initialize();
-        // }, 10)
-        return this;
+        this.userApp.initialize();
     }
 }

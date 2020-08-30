@@ -4,10 +4,11 @@ const version = require('./package.json').version;
 // js
 const jsInput = [
     './node_modules/@voliware/template2/dist/template2-bundle.min.js',
-    './node_modules/@voliware/node-user/public/js/user-app.min.js',
+    './node_modules/@voliware/node-user/public/js/nodeuser.min.js',
     './public/js/cookie.min.js',
     './public/js/anime.min.js',
     './public/js/piklor.min.js',
+    './public/js/router.js',
     './public/js/todo.js',
     './public/js/todoTemplate.js',
     './public/js/todoTemplateManager.js',
@@ -25,7 +26,7 @@ const jsConfig = {
 // css
 const cssInput = [
     './node_modules/@voliware/template2/dist/template2.min.css',
-    './node_modules/@voliware/node-user/public/css/user-style.min.css',
+    './node_modules/@voliware/node-user/public/css/nodeuser.min.css',
     './public/css/fontawesome.min.css',
     './public/css/style.css'
 ];
@@ -48,9 +49,15 @@ const htmlConfig = {
     input: htmlInput,
     output: htmlOutput,
     minify: true,
+    // find the match and replace it with the contents of the file
     modifiers: {
-        append: [
-            {match: '<!-- userapp -->', contents: {file: './node_modules/@voliware/node-user/public/html/user-app.html'}}
+        replace: [
+            {
+                match: '<!-- userapp -->', 
+                contents: {
+                    file: './node_modules/@voliware/node-user/public/html/nodeuser.html'
+                }
+            }
         ]
     }
 };
