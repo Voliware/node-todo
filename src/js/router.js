@@ -20,11 +20,11 @@ class Router {
 
     /**
      * Delete a todo
-     * @param {String} todoId - todo id
+     * @param {String} todo_id - todo id
      * @return {Promise}
      */
-    static deleteTodo(todoId){
-        return fetch(`/todo/${todoId}`, {
+    static deleteTodo(todo_id){
+        return fetch(`/todo/${todo_id}`, {
             method: "delete"
         }).catch((err) => {
             console.error(err);
@@ -33,11 +33,11 @@ class Router {
 
     /**
      * Get a todo
-     * @param {String} todoId - todo id
+     * @param {String} todo_id - todo id
      * @return {Promise}
      */
-    static getTodo(todoId){
-        return fetch(`/todo/${todoId}`)
+    static getTodo(todo_id){
+        return fetch(`/todo/${todo_id}`)
             .catch((err) => {
                 console.error(err);
             });
@@ -56,13 +56,13 @@ class Router {
 
     /**
      * Reparent a todo by reattaching a todo to a different parent
-     * @param {String} todoId - todo _id to move to a new parent
+     * @param {String} todo_id - todo _id to move to a new parent
      * @param {String} parentId - parent todo _id to move the todo to
      * @return {Promise}
      */
-    static reparentTodo(todoId, parentId){
+    static reparentTodo(todo_id, parentId){
         let body = JSON.stringify({parentId});
-        return fetch(`/todo/parent/${todoId}`, {
+        return fetch(`/todo/parent/${todo_id}`, {
             method: "post",
             body: body
         }).catch((err) => {
@@ -72,14 +72,14 @@ class Router {
 
     /**
      * Set the collapsed state
-     * @param {String} todoId - todo id
+     * @param {String} todo_id - todo id
      * @param {Bboolean} collapsed - true to collapse, false to uncollapse
      * @param {Boolean} [recursive=false] - true to apply same to all children
      * @return {Promise}
      */
-    static setCollapsedState(todoId, collapsed, recursive = false){
+    static setCollapsedState(todo_id, collapsed, recursive = false){
         let body = JSON.stringify({collapsed, recursive});
-        return fetch(`/todo/collapsed/${todoId}`, {
+        return fetch(`/todo/collapsed/${todo_id}`, {
             method: "post",
             body: body
         }).catch((err) => {

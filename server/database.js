@@ -11,14 +11,14 @@ class Database extends EventEmitter {
 
     /**
      * Constructor
-     * @param {string|object} options
-     * @param {string} options.name
-     * @param {string} options.host
-     * @param {string} options.port
-     * @param {string[]} collections
-     * @param {string} [options.username]
-     * @param {string} [options.password]
-     * @param {string} [options.namespace]
+     * @param {String|Object} options
+     * @param {String} options.name
+     * @param {String} options.host
+     * @param {String} options.port
+     * @param {String[]} collections
+     * @param {String} [options.username]
+     * @param {String} [options.password]
+     * @param {String} [options.namespace]
      * @returns {Database}
      */
     constructor(options){
@@ -36,7 +36,7 @@ class Database extends EventEmitter {
         };
         Object.extend(this.options, options);
 
-        this.logger = new Logger(this.constructor.name, {level: "debug"});
+        this.logger = new Logger(this.constructor.name, {level: "verbose"});
 
         this.url = (typeof url === "string") ? url : this.createUrl(this.options);
         this.client = new MongoClient(this.url, {
@@ -51,12 +51,12 @@ class Database extends EventEmitter {
     /**
      * Create a mongodb url string with the following pattern:
      * mongodb://[username:password@]host1[:port1][,host2[:port2],...[,hostN[:portN]]][/[database][?options]]
-     * @param {object} params
-     * @param {string} params.username 
-     * @param {string} params.password
-     * @param {string} params.host
-     * @param {string} params.port
-     * @param {string} params.name
+     * @param {Object} params
+     * @param {String} params.username 
+     * @param {String} params.password
+     * @param {String} params.host
+     * @param {String} params.port
+     * @param {String} params.name
      * @returns this;
      */
     createUrl({username, password, host, port, name}){
@@ -84,7 +84,7 @@ class Database extends EventEmitter {
      * Connect to mongo.
      * Throws an error if it fails.
      * @async
-     * @returns {Promise<boolean>} true if it connects
+     * @returns {Promise<Boolean>} True if it connects
      */
     async connect(){
         this.logger.debug(`Connecting to ${this.url}`)
@@ -100,7 +100,7 @@ class Database extends EventEmitter {
 
     /**
      * Get a database
-     * @param {string} name 
+     * @param {String} name 
      */
     getDatabase(name){
         return this.client.db(name);
@@ -108,7 +108,7 @@ class Database extends EventEmitter {
 
     /**
      * Create all collections 
-     * @param {string[]} collections - array of collection names
+     * @param {String[]} collections - array of collection names
      * @returns {Promise}
      */
     async createCollections(collections){
@@ -134,10 +134,9 @@ class Database extends EventEmitter {
     }
 
     /**
-     * Get a collection stored in the 
-     * cached collections list.
-     * @param {string} name 
-     * @returns {object}
+     * Get a collection stored in the cached collections list.
+     * @param {String} name 
+     * @returns {Object}
      */
     getCollection(name){
         return this.collections[name];
@@ -146,7 +145,7 @@ class Database extends EventEmitter {
     /**
      * Get all collections
      * @async
-     * @returns {Promise<object>} - collections
+     * @returns {Promise<Object>} - collections
      */
     async getCollections(){
         let collections = {};
@@ -194,10 +193,9 @@ class Database extends EventEmitter {
 
     /**
      * Process a filter object used for queries.
-     * If the filter has an _id property, replace
-     * it with a new Mongo.ObjectID.
-     * @param {object} filter 
-     * @returns {object}
+     * If the filter has an _id property, replace it with a new Mongo.ObjectID.
+     * @param {Object} filter 
+     * @returns {Object}
      */
     processFilter(filter={}){
         if(typeof filter._id !== "undefined"){

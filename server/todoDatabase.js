@@ -8,7 +8,7 @@ class TodoDatabase extends Database {
 
     /**
      * Constructor
-     * @param {object} [options={}]
+     * @param {Object} [options={}]
      * @returns {TodoDatabase}
      */
     constructor(options = {}){
@@ -20,8 +20,8 @@ class TodoDatabase extends Database {
 
     /**
      * Delete a todo from the collection.
-     * @param {object} filter - query filter
-     * @param {object} [options] - query options
+     * @param {Object} filter - query filter
+     * @param {Object} [options] - query options
      * @async
      * @returns {Promise<boolean>} true if deleted
      */
@@ -35,8 +35,8 @@ class TodoDatabase extends Database {
             return false;
         }
 
-        if(typeof todo.parentId === "string"){
-            await this.removeTodoChild({_id: todo.parentId}, todo._id);
+        if(typeof todo.parent_id === "string"){
+            await this.removeTodoChild({_id: todo.parent_id}, todo._id);
         }
 
         if(Array.isArray(todo.children) && todo.children.length){
@@ -58,8 +58,8 @@ class TodoDatabase extends Database {
 
     /**
      * Find a todo from the collection
-     * @param {object} filter - query filter
-     * @param {object} [options] - query options
+     * @param {Object} filter - query filter
+     * @param {Object} [options] - query options
      * @async
      * @returns {Promise<object>} todo document
      */
@@ -81,9 +81,9 @@ class TodoDatabase extends Database {
 
     /**
      * Get todos
-     * @param {object} [filter] 
-     * @param {object} [options] 
-     * @param {number} [options.limit=50] 
+     * @param {Object} [filter] 
+     * @param {Object} [options] 
+     * @param {Number} [options.limit=50] 
      * @async
      * @returns {Promise<Cursor>} mongodb cursor
      */
@@ -97,8 +97,8 @@ class TodoDatabase extends Database {
 
     /**
      * Insert a todo into the collection
-     * @param {object} todo
-     * @param {object} [options] 
+     * @param {Object} todo
+     * @param {Object} [options] 
      * @async
      * @returns {Promise<boolean>} true if inserted
      */
@@ -109,8 +109,8 @@ class TodoDatabase extends Database {
         let result = await this.collections.todos.insertOne(todo, options)
         if(result.insertedCount){
             this.logger.info('Inserted todo');
-            if(todo.parentId){
-                return this.appendTodoChild({_id: todo.parentId}, result.insertedId);
+            if(todo.parent_id){
+                return this.appendTodoChild({_id: todo.parent_id}, result.insertedId);
             }
             return true;
         }
@@ -122,9 +122,9 @@ class TodoDatabase extends Database {
 
     /**
      * Update a todo in the collection
-     * @param {object} filter
-     * @param {object} todo
-     * @param {object} [options]
+     * @param {Object} filter
+     * @param {Object} todo
+     * @param {Object} [options]
      * @async
      * @returns {Promise<boolean>} true if updated
      */
@@ -200,7 +200,7 @@ class TodoDatabase extends Database {
             return false;
         }
 
-        if(todo.parentId === childId){
+        if(todo.parent_id === childId){
             this.logger.error("Parent cannot equal child");
             return false;
         }
@@ -237,14 +237,14 @@ class TodoDatabase extends Database {
     /**
      * Set a todo's parent.
      * @param {Object} filter 
-     * @param {String} parentId 
+     * @param {String} parent_id 
      * @async
      * @return {Promise}
      */
-    async setTodoParent(filter, parentId){
+    async setTodoParent(filter, parent_id){
         this.logger.debug("Setting todo parent");
         this.logger.verbose(filter);
-        this.logger.verbose(parentId);
+        this.logger.verbose(parent_id);
         filter = this.processFilter(filter);
 
         let todo = await this.getTodo(filter);
@@ -252,17 +252,17 @@ class TodoDatabase extends Database {
             return false;
         }
 
-        if(todo.parentId){
-            if(!await this.removeTodoChild({_id: todo.parentId}, todo._id)){
+        if(todo.parent_id){
+            if(!await this.removeTodoChild({_id: todo.parent_id}, todo._id)){
                 return false;
             }
         }
 
-        if(!await this.appendTodoChild({_id: parentId},  todo._id)){
+        if(!await this.appendTodoChild({_id: parent_id},  todo._id)){
             return false;
         }
 
-        let query = {$set: {parentId}};
+        let query = {$set: {parent_id}};
         return this.updateTodo(filter, query);
     }
 

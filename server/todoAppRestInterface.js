@@ -1,7 +1,7 @@
 /**
  * REST interface for TodoApp.
- * Requires a valid ClientRequest, ServerResponse, 
- * and object of parsed request data for every API call.
+ * Requires a valid ClientRequest, ServerResponse, and object of parsed 
+ * request data for every API call.
  */
 class TodoAppRestInterface {
 
@@ -46,11 +46,11 @@ class TodoAppRestInterface {
     }
     
     /**
-     * Send an error response.
+     * Send an error response. 
      * This ends the response.
      * @param {ServerResponse} response 
-     * @param {String} error - string error
-     * @param {number} [code=400]
+     * @param {String} error - String error
+     * @param {Number} [code=400]
      * @returns {ServerResponse}
      */
     sendError(response, error, code = 400){
@@ -58,8 +58,7 @@ class TodoAppRestInterface {
     };
 
     /**
-     * Send an error response indicating that
-     * passed body data is invalid.
+     * Send an error response indicating that passed body data is invalid.
      * This ends the response.
      * @param {ServerResponse} response 
      * @returns {ServerResponse}
@@ -69,8 +68,7 @@ class TodoAppRestInterface {
     }
 
     /**
-     * Send an error response indicating that
-     * the user must be logged in.
+     * Send an error response indicating that the user must be logged in.
      * This ends the response.
      * @param {ServerResponse} response 
      * @returns {ServerResponse}
@@ -81,9 +79,8 @@ class TodoAppRestInterface {
 
     /**
      * Sanitize incoming data meant to set a todo object.
-     * This prevents any unwanted data from making its way
-     * into the database. This returns a plain object and
-     * not a Todo object.
+     * This prevents any unwanted data from making its way into the database. 
+     * This returns a plain object and not a Todo object.
      * @param {Object} data 
      * @return {Object}
      */
@@ -101,8 +98,8 @@ class TodoAppRestInterface {
         if(typeof data.collapsed === "number"){
             todo.collapsed = data.collapsed;
         }
-        if(typeof data.backgroundColor === "string"){
-            todo.backgroundColor = data.backgroundColor;
+        if(typeof data.background_colour === "string"){
+            todo.background_colour = data.background_colour;
         }
         if(Array.isArray(data.children)){
             todo.children = data.children;

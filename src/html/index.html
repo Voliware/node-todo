@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Todo</title>
+    <link rel="stylesheet" href="/css/style.min.css">
+</head>
+<body>
+    <main class="flex-center">
+        <div id="loader">
+            <div id="loaderText">TODO</div>
+            <div id="loaderIcon">
+              <i class="loader-layer"></i>
+              <i class="loader-layer"></i>
+              <i class="loader-layer"></i>
+            </div>
+        </div>
+        <div id="todo-user-app">
+            <!-- userapp -->
+        </div>
+        <div id="app" class="hidden">
+            <div id="todo-header">
+                <h5 id="todo-title">TODO by VOLIWARE</h5>
+                <div id="todo-user">
+                    <template-user id="user">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <span data-name="avatar"></span>
+                            </div>
+                            <div class="user-name">
+                                <span data-name="name"></span>
+                            </div>
+                            <div class="user-email">
+                                <span data-name="email"></span>
+                            </div>
+                        </div>
+                        <div class="user-buttons">
+                            <button class="user-button" name="logout" title="Logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </template-user>
+                </div>
+            </div>
+            <div id="todo-buttons">
+                <button class="todo-app-button" id="todo-add-button">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Todo</span>
+                </button>
+                <button class="todo-app-button" id="todo-share-button">
+                    <i class="fas fa-share-square"></i>
+                    <span>Share</span>
+                </button>
+            </div>
+            <div id="todo-list"></div>
+        </div>
+        <script src="/js/app.min.js"></script>
+        <script>const app = new TodoApp(); app.initialize();</script>
+    </main>
+</body>
+</html>

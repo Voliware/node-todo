@@ -1,8 +1,8 @@
 const Path = require('path');
 const NodeServer = require('@voliware/node-server')
 const NodeUser = require('@voliware/node-user');
-const TodoApp = require('./lib/todoApp');
-const TodoAppRestInterface = require('./lib/todoAppRestInterface');
+const TodoApp = require('./server/todoApp');
+const TodoAppRestInterface = require('./server/todoAppRestInterface');
 
 const app = new TodoApp();
 const http_server = new NodeServer.HttpServer({

@@ -1,4 +1,4 @@
-/* general */
+/* General */
 html, body{
     min-height: 100%;
     height: 100%;
@@ -31,7 +31,7 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active  {
     -webkit-box-shadow: 0 0 0 30px white inset;
 }
-/* alignment */
+/* Alignment */
 .flex{
     display: flex; 
 }
@@ -40,14 +40,12 @@ input:-webkit-autofill:active  {
     align-items: center;
     justify-content: center;
 }
-/* buttons */
+/* Buttons */
 button {
     background:none;
     border:none;
     cursor: pointer;
     padding:5px;
-}
-button:focus {
 }
 .btn{
     background: none;
@@ -57,14 +55,13 @@ button:focus {
 .btn:focus {
     outline:0;
 }
-/* forms */
+/* Forms */
 .form {
     height: 100%;
     padding: 20px;
     position: relative;
     width: 100%;
 }
-/* inputs */
 input {
     border: 1px solid #ddd;
     border-radius: 2px;
@@ -73,18 +70,17 @@ input {
     margin-bottom: 10px;
     width: 100%;
 }
-/* main */
+/* Main */
 main {
     height: 100%;
 }
-/* loader */
-#loaderText {
+#loader-text {
     color: white;
     display: inline-block;
     font-size: 100px;
     font-family: "Amaranth", Arial, sans-serif;
 }
-#loaderIcon{
+#loader-icon{
     display: inline-block;
     height: 62px;
     margin-left: 20px;
@@ -114,7 +110,7 @@ main {
     -webkit-animation: moveup 1.8s cubic-bezier(0.39, 0.575, 0.565, 1) infinite normal;
     animation: moveup 1.8s cubic-bezier(0.39, 0.575, 0.565, 1) infinite normal;
 }
-/* login */
+/* Login */
 #login {
     width: 300px;
 }
@@ -136,12 +132,12 @@ main {
 #loginLinks a {
     color: #1f3e5d;
 }
-/* app */
+/* App */
 #app {
     height: 100%;
     width: 80%;
 }
-#todoHeader {
+#todo-header {
     height: 32px;
     padding: 8px 10px;
     margin-bottom: 5px;
@@ -150,13 +146,13 @@ main {
     display: flex;
     font-family: "Amaranth", Arial, sans-serif;
 }
-#todoTitle{
+#todo-title{
     margin:0;
     width: 20%;
     line-height: 18px;
 }
-/* user */
-#todoUser{
+/* User */
+#todo-user{
     text-align: right;
     width: 80%;
 }
@@ -171,8 +167,8 @@ main {
     height: 16px;
     padding:0;
 }
-/* todo */
-#todoApp{
+/* Todo */
+#todo-app{
     max-width: 800px;
     margin:auto;
 }
@@ -185,86 +181,23 @@ main {
     font-size:16px;
     color:white;
 }
-#todoAddButton {
+#todo-add-button {
     background: #45e897;
     width:65%;
 }
-#todoShareButton {
+#todo-share-button {
     float: right;
     width: 34%;
 }
 .todo-app-button span {
     margin-left:10px;
 }
-template-todo{
-    border-radius: 5px;
-    cursor: pointer;
-    margin:5px 0;
-}
-.todo-body{
-    background: white;
-    border-radius: 5px;
-    table-layout: fixed;
-    width: 100%;
-}
-.todo-body.colour-picker-open{
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-}
-.todo-body.complete{
-    opacity: 0.35;
-}
-.todo-drag-over{
-    box-shadow: inset 0px 0px 0px 5px #26d6f3;
-}
-.todo-body button{
-    height:50px;
-    width:50px;
-}
-.todo-child{
-    margin-left:15px;
-}
-.todo-form {
-}
-.todo-input {
-    background: rgba(0, 0, 0, 0.04);
-    border: 0;
-    font-size: 16px;
-    margin:0;
-    padding:15px;
-}
-.todo-input.complete{
-    background:rgba(255, 255, 255, 0);
-    text-decoration: line-through;
-}
-.todo-buttons {
-    width: 100px;
-}
-.todo-buttons button {
-    font-size:15px;
-    margin-left:-4px;
-}
-.todo-status{
-    color: #d0d0d0;
-    font-size:20px;
-    vertical-align: middle;
-    width: 50px;
-}
-.todo-status.complete{
-    color: #3bd24d;
-}
-.todo-buttons button[disabled]{
-    cursor:not-allowed;
-    opacity:0.25;
-}
-.todo-button-collapse-container{
-    width:50px;
-}
-/* user app */
-#todoUserApp {
+
+/* User app */
+#todo-user-app {
     width: 30%;
 }
-#todoUserApp button{
+#todo-user-app button{
     background: #5cb4ff;
     border-radius: 5px;
     padding: 15px;

@@ -7,45 +7,79 @@ class TodoApp {
      * Constructor
      */
     constructor(){
+
+        /**
+         * Main HTML element.
+         * @type {HTMLElement}
+         */
         this.wrapper = document.getElementById('app');
+
+        /**
+         * Loading display element.
+         * @type {HTMLElement}
+         */
         this.loader = document.getElementById('loader');
-        this.userAppElement = document.getElementById('todoUserApp');
-        this.todoList = document.getElementById('todoList');
-        this.addTodoButton = document.getElementById('todoAddButton');
         
-        this.userApp = new UserApp();
-        this.todoManager = new TodoTemplateManager(this.todoList);
+        /**
+         * User application element.
+         * @type {HTMLElement}
+         */
+        this.user_app_element = document.getElementById('todo-user-app');
         
-        this.userApp.on('login.cookie.success', () => {
+        /**
+         * Todo list element.
+         * @type {HTMLElement}
+         */
+        this.todo_list = document.getElementById('todo-list');
+        
+        /**
+         * Add todo button.
+         * @type {HTMLElement}
+         */
+        this.add_todo_button = document.getElementById('todo-add-button');
+        
+        /**
+         * User app.
+         * @type {UserApp}
+         */
+        this.user_app = new UserApp();
+        
+        /**
+         * Todo element manager
+         * @type {ElementManager}
+         */
+        this.todo_manager = new TodoManager(this.todo_list);
+        
+        this.user_app.on('login.cookie.success', () => {
             this.getTodos();
             this.displayModule('app');
         });
-        this.userApp.on('login.cookie.fail', () => {
+        this.user_app.on('login.cookie.fail', () => {
             this.displayModule('login');
         });
-        this.userApp.on('login.success', (data) => {
+        this.user_app.on('login.success', (data) => {
             this.getTodos();
             this.displayModule('app');
         });
-        this.userApp.on('login.required', () => {
+        this.user_app.on('login.required', () => {
             this.displayModule('login');
         });
-        this.userApp.on('logout', () => {
+        this.user_app.on('logout', () => {
             this.displayModule('login');
         });
 
-        this.todoManager.on('addChild', () => {
+        this.todo_manager.on('addChild', () => {
             this.getTodos();
         });
-        this.todoManager.on('delete', () => {
+        this.todo_manager.on('delete', () => {
             this.getTodos();
         });
-        this.todoManager.on('reparent', (data) => {
+        this.todo_manager.on('reparent', (data) => {
             this.reparentTodo(data.todoId, data.parentId);
         });
-        this.todoManager.on('update', () => {
+        this.todo_manager.on('update', () => {
         });
-        this.addTodoButton.addEventListener('click', () => {
+        this.add_todo_button.addEventListener('click', () => {
             this.addTodo();
         });
     }
@@ -71,7 +105,7 @@ class TodoApp {
      * @param {Boolean} state
      */
     displayUser(state){
-        Template.display(this.userAppElement, state);
+        Template.display(this.user_app_element, state);
     }
 
     /**
@@ -119,20 +153,20 @@ class TodoApp {
                 return response.json();
             })
             .then((json) => {
-                this.todoManager.render(json);
+                this.todo_manager.render(json);
             });
     }
 
     /**
      * Reparent a todo by reattaching a child to a different parent
-     * @param {String} todoId - todo _id to move to a new parent
-     * @param {String} parentId - parent todo _id to move the todo to
+     * @param {String} todo_id - Todo id to move to a new parent
+     * @param {String} parent_id - Parent todo id to move the todo to
      * @return {Promise}
      */
-    reparentTodo(todoId, parentId){
-        return Router.reparentTodo(todoId, parentId)
+    reparentTodo(todo_id, parent_id){
+        return Router.reparentTodo(todo_id, parent_id)
             .then(() => {
-                this.todoManager.empty();
+                this.todo_manager.empty();
                 this.getTodos();
             });
     }
@@ -141,6 +175,6 @@ class TodoApp {
      * Initialize all components
      */
     initialize(){
-        this.userApp.initialize();
+        this.user_app.initialize();
     }
 }

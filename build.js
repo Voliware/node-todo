@@ -1,53 +1,57 @@
 const NodeBuild = require('@voliware/node-build');
-const version = require('./package.json').version;
+const Version = require('./package.json').version;
 
-// js
-const jsInput = [
-    './node_modules/@voliware/template2/dist/template2-bundle.min.js',
-    './node_modules/@voliware/node-user/public/js/nodeuser.min.js',
-    './public/js/cookie.min.js',
-    './public/js/anime.min.js',
-    './public/js/piklor.min.js',
-    './public/js/router.js',
-    './public/js/todo.js',
-    './public/js/todoTemplate.js',
-    './public/js/todoTemplateManager.js',
-    './public/js/todoApp.js'
-];
-const jsOutput = "./public/js/todo.min.js"
+/******************************************************************************
+ * JS
+ *****************************************************************************/
+
 const jsConfig = {
     name: "node-todo JS",
-    version: version, 
-    input: jsInput,
-    output: jsOutput,
+    version: Version, 
+    input: [
+        './node_modules/@voliware/template2/dist/template2-bundle.min.js',
+        './node_modules/@voliware/node-user/public/js/nodeuser.min.js',
+        './src/js/cookie.min.js',
+        './src/js/anime.min.js',
+        './src/js/piklor.min.js',
+        './src/js/router.js',
+        './src/js/todo.js',
+        './src/js/todoManager.js',
+        './src/js/todoApp.js'
+    ],
+    output: "./public/js/app.min.js",
     minify: true
 };
 
-// css
-const cssInput = [
-    './node_modules/@voliware/template2/dist/template2.min.css',
-    './node_modules/@voliware/node-user/public/css/nodeuser.min.css',
-    './public/css/fontawesome.min.css',
-    './public/css/style.css'
-];
-const cssOutput = "./public/css/todo.min.css";
+/******************************************************************************
+ * CSS
+ *****************************************************************************/
+
 const cssConfig = {
     name: "node-todo CSS",
-    version: version,
-    input: cssInput,
-    output: cssOutput,
+    version: Version,
+    input: [
+        './node_modules/@voliware/template2/dist/template2.min.css',
+        './node_modules/@voliware/node-user/public/css/nodeuser.min.css',
+        './src/css/fontawesome.min.css',
+        './src/css/todo.css',
+        './src/css/style.css'
+    ],
+    output: "./public/css/style.min.css",
     minify: true
 };
 
-const htmlInput = [
-    './public/html/index.html',
-];
-const htmlOutput = './public/index.html';
+/******************************************************************************
+ * HTML
+ *****************************************************************************/
+
 const htmlConfig = {
     name: "node-todo HTML",
-    version: version,
-    input: htmlInput,
-    output: htmlOutput,
+    version: Version,
+    input: [
+        './src/html/index.html',
+    ],
+    output: './public/index.html',
     minify: true,
     // find the match and replace it with the contents of the file
     modifiers: {
@@ -62,6 +66,9 @@ const htmlConfig = {
     }
 };
 
-// build
+/******************************************************************************
+ * Build 
+ *****************************************************************************/
+
 const configs = [jsConfig, cssConfig, htmlConfig];
 new NodeBuild.Build(configs).run();

@@ -8,13 +8,13 @@ class TodoApp {
 
     /**
      * Constructor
-     * @param {object} [options={}]
-     * @param {object} [options.database]
-     * @param {string} [options.database.host="localhost"] - mongodb host
-     * @param {number} [options.database.port=27017] - mongodb port
-     * @param {string} [options.database.username=""] - mongodb username
-     * @param {string} [options.database.password=""] - mongodb password
-     * @param {string} [options.database.namespace=""] - mongodb namespace, requires username/password
+     * @param {Object} [options={}]
+     * @param {Object} [options.database]
+     * @param {String} [options.database.host="localhost"] - mongodb host
+     * @param {Number} [options.database.port=27017] - mongodb port
+     * @param {String} [options.database.username=""] - mongodb username
+     * @param {String} [options.database.password=""] - mongodb password
+     * @param {String} [options.database.namespace=""] - mongodb namespace, requires username/password
      * @return {TodoApp}
      */
     constructor(options = {}){
@@ -24,8 +24,7 @@ class TodoApp {
     }
 
     /**
-     * Append an id for a child todo 
-     * to a todo's children array.
+     * Append an id for a child todo to a todo's children array.
      * @param {Object} filter 
      * @param {String} childId 
      * @return {Promise}
